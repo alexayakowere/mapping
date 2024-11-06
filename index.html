@@ -20,33 +20,39 @@
   }
 
   /* Dot styling */
-  .dot {
+  .dot, .dot1 {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: red;
+    width: 6px;
+    height: 6px;
+    background-color: rgb(233, 207, 14);
     border-radius: 50%;
-    top: 50%; /* Adjust these values to position the dot */
-    left: 50%; /* Adjust these values to position the dot */
-    animation: glow 1.5s infinite ease-in-out;
+    transform-origin: center;
+    animation: pulse 1.5s infinite ease-in-out;
     cursor: pointer;
   }
 
-  /* Glowing animation */
-  @keyframes glow {
-    0% {
-      box-shadow: 0 0 4px rgba(255, 0, 0, 0.8);
+  .dot {
+    top: 50%; /* Adjust these values to position the dot */
+    left: 55%; /* Adjust these values to position the dot */
+  }
+
+  .dot1 {
+    top: 42%; /* Adjust these values to position the dot */
+    left: 32%; /* Adjust these values to position the dot */
+  }
+
+  /* Pulsating animation */
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
     }
     50% {
-      box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-    }
-    100% {
-      box-shadow: 0 0 4px rgba(255, 0, 0, 0.8);
+      transform: scale(1.5);
     }
   }
 
   /* Info card styling */
-  .info-card {
+  .info-card, .info-card1 {
     display: none;
     position: absolute;
     background-color: white;
@@ -56,9 +62,11 @@
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
     font-size: 14px;
     white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
   }
 
-  .info-card::after {
+  .info-card::after, .info-card1::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -76,33 +84,54 @@
   <!-- Map Image -->
   <img src="maps.jpeg" alt="Map">
   
-  <!-- Glowing Dot -->
+  <!-- Pulsating Dots -->
   <div class="dot" id="mapDot"></div>
+  <div class="dot1" id="mapDot1"></div>
 
-  <!-- Info Card -->
+  <!-- Info Cards -->
   <div class="info-card" id="infoCard">
-    <p><strong>Name:</strong> Kamau</p>
+    <p><strong>Name:</strong> John Kamau</p>
     <p><strong>Location:</strong> Thika</p>
+    <p><strong>Objects:</strong> 2 Fig Tress</p>
+    <p><strong>Status:</strong> On Construction</p>
+  </div>
+
+  <div class="info-card1" id="infoCard1">
+    <p><strong>Name:</strong> Trump Carlos</p>
+    <p><strong>Location:</strong> HighRise</p>
+    <p><strong>Object:</strong> Void</p>
+    <p><strong>Status:</strong> Idle</p>
   </div>
 </div>
 
 <script>
   const dot = document.getElementById('mapDot');
+  const dot1 = document.getElementById('mapDot1');
   const infoCard = document.getElementById('infoCard');
+  const infoCard1 = document.getElementById('infoCard1');
 
-  // Show info card on hover or click
-  dot.addEventListener('mouseenter', (e) => showInfoCard(e));
-  dot.addEventListener('click', (e) => showInfoCard(e));
-  dot.addEventListener('mouseleave', hideInfoCard);
+  // Event listeners for the first dot
+  dot.addEventListener('mouseenter', (e) => showInfoCard(e, infoCard));
+  dot.addEventListener('click', (e) => showInfoCard(e, infoCard));
+  dot.addEventListener('mouseleave', () => hideInfoCard(infoCard));
 
-  function showInfoCard(event) {
-    infoCard.style.display = 'block';
-    infoCard.style.left = `${event.pageX + 10}px`;
-    infoCard.style.top = `${event.pageY}px`;
-  }
+  // Event listeners for the second dot
+  dot1.addEventListener('mouseenter', (e) => showInfoCard(e, infoCard1));
+  dot1.addEventListener('click', (e) => showInfoCard(e, infoCard1));
+  dot1.addEventListener('mouseleave', () => hideInfoCard(infoCard1));
 
-  function hideInfoCard() {
-    infoCard.style.display = 'none';
+  // Function to show info card based on dot and card passed
+  function showInfoCard(event, card) {
+  const cardWidth = card.offsetWidth / 2; // Get half width of the card
+  const cardHeight = card.offsetHeight / 2; // Get half height of the card
+
+  card.style.display = 'block';
+  card.style.left = `${event.pageX - cardWidth}px`; // Center card horizontally
+  card.style.top = `${event.pageY - cardHeight}px`; // Center card vertically
+}
+  // Function to hide the specific info card
+  function hideInfoCard(card) {
+    card.style.display = 'none';
   }
 </script>
 
